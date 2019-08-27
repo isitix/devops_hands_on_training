@@ -40,9 +40,19 @@ Many options :
 + Installing in a default python environment using pip
 + Installing in a python virtual environment (pyenv, miniconda, ...) using pip
 
-We install in a python virtual environment : https://github.com/spurin/masteringansible/tree/master/01%20-%20Installation%20and%20Configuration%20of%20Ansible/05%20-%20Validating%20Ansible%20Installation
+### Procedure
 
-Documentation : https://docs.ansible.com/ansible/latest/installation_guide/index.html
+1. Install Ubuntu (VM)
+2. Stop Ubuntu instance
+3. Take a snapshot
+4. Install ansible using apt
+
+We install following Ansible official installation guide for Ubuntu : https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-the-control-node. The complete reference documentation is here : https://docs.ansible.com/ansible/latest/installation_guide/index.html
+
+### Authentification par clé dans SSH
+
+Voir le doc suivant : https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
+
 
 ## Getting started
 
@@ -55,7 +65,8 @@ Tutorial : https://docs.ansible.com/ansible/latest/user_guide/intro_getting_star
 
 ## Modules
 
-Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/02%20-%20Ansible%20Modules
++ Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/02%20-%20Ansible%20Modules
++ Documentation : https://docs.ansible.com/ansible/latest/user_guide/modules.html
 
 ## YAML
 
@@ -83,5 +94,5 @@ Tutorial : [Introduction to playbooks]("https://github.com/spurin/masteringansib
 ## Wrap up
 
 + Tutorial : [Wrap up of day1](https://github.com/PacktPublishing/Mastering-Ansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/08%20-%20Ansible%20Playbooks%2C%20Creating%20and%20Executing)
- 
 
+## END OF DAY 1
