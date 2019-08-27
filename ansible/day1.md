@@ -140,6 +140,17 @@ $sudo chmod 400 /etc/sudoers.d/ansible
 
 Type Ctl + O to save the file to /etc/sudoers.d/ansible
 
+#### 6) Clone ubuntu1 to get ubuntu2 and ubuntu3
+
+Network addresses :
+
+| hostname | address |
+|-----|---------|
+| controler | 192.168.126.10 |
+| ubuntu1 | 192.168.126.11 |
+| ubuntu2 | 192.168.126.12 |
+| ubuntu3 | 192.168.126.13 |
+
 ## Inventories
 
 + Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/01%20-%20Ansible%20Inventories
