@@ -136,8 +136,7 @@ ansible ALL=NOPASSWD: ALL
 CTRL+S
 CTRL+X
 $sudo chmod 400 /etc/sudoers.d/ansible
-```
-
+```y
 Type Ctl + O to save the file to /etc/sudoers.d/ansible
 
 #### 6) Clone ubuntu1 to get ubuntu2 and ubuntu3
@@ -169,6 +168,31 @@ inventory      = /home/ansible/deployment/hosts
 
 + Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/01%20-%20Ansible%20Inventories
 + Documentation : https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
+
+### In a nutshell
+
+In an inventory : 
+
++ you can assign a machine to a group
++ you can design a hierarchy of groups (parent groups and children) with many levels 
++ You can any operations (facts gathering, vars setting, task, trigger) to a specific group
++ you can define range based on machine names
++ you can apply variables (ssh port, ansible user, become password, ...) to every machines or a group of machines
+
+### Hands on
+
++ Add a new ubuntu server, ubuntu4 (192.168.126.14)
++ Delete sudoer no password configuration on ubuntu4
++ Add ubuntu4 to the inventory
++ Define the following group hierarchy :
+
+| Group name | Parent group | Hosts |
+|------|------|------------|
+| production | server | ubuntu1, ubuntu2 |
+| test | server | ubuntu3, ubuntu4 |
+| application | ubuntu | production, test |
+| administration | ubuntu | controller |
+| ubuntu | linux | application, administration |
 
 ## Modules
 
