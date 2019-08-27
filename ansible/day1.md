@@ -104,9 +104,31 @@ ip add
 #### 2) Add a ssh key pair to the controler and export it t
 
 ```bash
-$ssh-keygen
-$ssh-copy-id ansible@192.168.126.10
+controler$ssh-keygen
+controler$ssh-copy-id ansible@192.168.126.10
 ```
+
+#### 3) Test the connection tu ubuntu1
+
+```bash
+controler$ssh -i id_rsa ansible@192.168.126.10
+```
+
+#### 4) Add ubuntu1 to the inventory
+
+On controler :
+
++ Edit /etc/ansible/hosts
++ Add line *ubuntu1* at the end of the file
++ Edit /etc/hosts
++ Add line *192.168.126.10 ubuntu1*
+
+Test the connection from the controler :
+
+```bash
+controler$ansible all -m ping
+```
+
 
 ## Inventories
 
