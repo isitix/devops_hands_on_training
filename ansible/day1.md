@@ -164,7 +164,7 @@ inventory      = /home/ansible/deployment/hosts
 :wq
 ```
 
-## Inventories
+## Static inventories
 
 + Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/01%20-%20Ansible%20Inventories
 + Documentation : https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
@@ -178,6 +178,12 @@ In an inventory :
 + You can any operations (facts gathering, vars setting, task, trigger) to a specific group
 + you can define range based on machine names
 + you can apply variables (ssh port, ansible user, become password, ...) to every machines or a group of machines
+
+Static inventories may be write in any of the following formats :
+
++ yaml
++ json
++ text
 
 ### Hands on
 
