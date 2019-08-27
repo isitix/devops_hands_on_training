@@ -128,7 +128,14 @@ Test the connection from the controler :
 ```bash
 controler$ansible all -m ping
 ```
+#### 5) Add ansible user to sudo without password
+On controler and on ubuntu1 :
+```bash
+$sudo visudo
+ansible ALL=NOPASSWD: ALL
+```
 
+Type Ctl + O to save the file to /etc/sudoers.d/ansible
 
 ## Inventories
 
