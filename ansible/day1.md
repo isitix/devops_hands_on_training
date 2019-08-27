@@ -57,18 +57,56 @@ Voir le doc suivant : https://www.digitalocean.com/community/tutorials/how-to-co
 
 Tutorial : https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html
 
-### Accès à la machine locale
+### Adding a local machine to the inventory
 
-1. Aller dans /etc/ansible sur le contrôleur
-2. Editer le fichier hosts (sudo)
-3. Aller à fin du fichier
-4. Ajouter la ligne *localhost ansible_connection=local*
-5. Enregistrer, sortir
-6. Dans la fenêtre shell du controleur, taper : *ansible all -m ping*
+1. Browse /etc/ansible directory on the controler
+2. Edit hosts file (sudo)
+3. Go to the end of the file
+4. Add line *localhost ansible_connection=local*
+5. Save and quit
+6. Type the shell command in the controller : *ansible all -m ping*
 
-### Accès à une machine distante
+### Accessing a remote machine *ubuntu1*
 
-Préparer une machine pour pouvoir la configurer via ansible : https://github.com/isitix/isitix.github.io/blob/master/_posts/2018-06-19-debian-ansible-ready.markdown
+To get a machine ansible ready, see : https://github.com/isitix/isitix.github.io/blob/master/_posts/2018-06-19-debian-ansible-ready.markdown
+
+#### Setting a new VM
+
++ Clone your ubuntu VM (snapshot before ansible)
++ Edit /etc/hosts and /etc/hostname to modify hostname 
+
+#### 1) Configure a fixed Ip address
+To configure a fixed ip address in Ubuntu, see : https://www.configserverfirewall.com/ubuntu-linux/configure-ubuntu-server-static-ip-address/
+
++ Go to /etc/netplan
++ Edit 50-cloud-init.yaml file
+
+Add the following lines to the yaml file : 
+
+```yaml
+network:
+    ethernets:
+        ens33:
+            addresses:
+                - 192.168.126.10/24
+            gateway4: 192.168.126.1
+            nameservers:
+                addresses: [8.8.8.8, 4.4.4.4]
+    version: 2
+```
+
+Then goto a shell on the controller and type :
+```shell
+sudo netplan apply
+ip add
+```
+
+#### 2) Add a ssh key pair to the controler and export it t
+
+```bash
+$ssh-keygen
+$ssh-copy-id ansible@192.168.126.10
+```
 
 ## Inventories
 
