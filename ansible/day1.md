@@ -49,9 +49,9 @@ Many options :
 
 We install following Ansible official installation guide for Ubuntu : https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-the-control-node. The complete reference documentation is here : https://docs.ansible.com/ansible/latest/installation_guide/index.html
 
-### Authentification par clé dans SSH
+### SSH authentication
 
-Voir le doc suivant : https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
+Reference documentation : https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
 
 ## Getting started
 
@@ -129,14 +129,17 @@ Test the connection from the controler :
 controler$ansible all -m ping
 ```
 #### 5) Add ansible user to sudo without password
+
 On controler and on ubuntu1 :
+
 ```bash
 $sudo visudo -f /etc/sudoers.d/ansible
 ansible ALL=NOPASSWD: ALL
 CTRL+S
 CTRL+X
 $sudo chmod 400 /etc/sudoers.d/ansible
-```y
+```
+
 Type Ctl + O to save the file to /etc/sudoers.d/ansible
 
 #### 6) Clone ubuntu1 to get ubuntu2 and ubuntu3
@@ -194,11 +197,11 @@ Static inventories may be write in any of the following formats :
 
 | Group name | Parent group | Hosts |
 |------|------|------------|
-| production | server | ubuntu1, ubuntu2 |
-| test | server | ubuntu3, ubuntu4 |
-| application | ubuntu | production, test |
-| administration | ubuntu | controller |
-| ubuntu | linux | application, administration |
+| production | application | ubuntu1, ubuntu2 |
+| test | application | ubuntu3, ubuntu4 |
+| application | NA | ubuntu 1 to 4 |
+| administration | NA | controller |
+| ubuntu | linux | controller, ubuntu 1 to 4 |
 
 ## Modules
 
