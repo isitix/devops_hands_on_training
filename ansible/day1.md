@@ -151,6 +151,20 @@ Network addresses :
 | ubuntu2 | 192.168.126.12 |
 | ubuntu3 | 192.168.126.13 |
 
+## Local configuration
+
+We move our configuration file from /etc/ansible to our home directory (/home/ansible) :
+
+```bash
+controller$cp /etc/ansible/ansible.cfg /home/ansible/.ansible.cfg
+controller$cd ~
+controller$mkdir deployment
+controller$cp /etc/ansible/hosts /home/ansible/deployment/
+controller$vim .ansible.cfg
+inventory      = /home/ansible/deployment/hosts
+:wq
+```
+
 ## Inventories
 
 + Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/01%20-%20Ansible%20Inventories
