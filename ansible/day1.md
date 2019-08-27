@@ -53,10 +53,22 @@ We install following Ansible official installation guide for Ubuntu : https://do
 
 Voir le doc suivant : https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
 
-
 ## Getting started
 
 Tutorial : https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html
+
+### Accès à la machine locale
+
+1. Aller dans /etc/ansible sur le contrôleur
+2. Editer le fichier hosts (sudo)
+3. Aller à fin du fichier
+4. Ajouter la ligne *localhost ansible_connection=local*
+5. Enregistrer, sortir
+6. Dans la fenêtre shell du controleur, taper : *ansible all -m ping*
+
+### Accès à une machine distante
+
+Préparer une machine pour pouvoir la configurer via ansible : https://github.com/isitix/isitix.github.io/blob/master/_posts/2018-06-19-debian-ansible-ready.markdown
 
 ## Inventories
 
