@@ -131,8 +131,11 @@ controler$ansible all -m ping
 #### 5) Add ansible user to sudo without password
 On controler and on ubuntu1 :
 ```bash
-$sudo visudo
+$sudo visudo -f /etc/sudoers.d/ansible
 ansible ALL=NOPASSWD: ALL
+CTRL+S
+CTRL+X
+$sudo chmod 400 /etc/sudoers.d/ansible
 ```
 
 Type Ctl + O to save the file to /etc/sudoers.d/ansible
