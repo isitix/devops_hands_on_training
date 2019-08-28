@@ -215,10 +215,10 @@ application:
         children:
                 production:
                         hosts:
-                                ubuntu[1:2]
+                                ubuntu[1:2]:
                 test:
                         hosts:
-                                ubuntu[3:4]
+                                ubuntu[3:4]:
 administration:
         hosts:
                 localhost:
@@ -227,9 +227,8 @@ linux:
         children:
                 ubuntu:
                         hosts:
-                                ubuntu[1:4]
-                        hosts:
-                                localhost
+                                ubuntu[1:4]:
+                                localhost:
 ...
 ```
 

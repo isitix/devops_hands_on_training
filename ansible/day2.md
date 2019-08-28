@@ -109,12 +109,12 @@ application:
         children:
                 production:
                         hosts:
-                                ubuntu[1:2]
-                        hosts:
-                                centos1
+                                ubuntu[1:2]:
+                                centos[1:2]:
                 test:
                         hosts:
-                                ubuntu[3:4]
+                                ubuntu[3:4]:
+                                centos3:
 administration:
         hosts:
                 localhost:
@@ -123,13 +123,11 @@ linux:
         children:
                 ubuntu:
                         hosts:
-                                ubuntu[1:4]
-                        hosts:
-                                localhost
-        children:
+                                ubuntu[1:4]:
+                                localhost:
                 centos:
                         hosts:
-                                centos1
+                                centos[1:3]:
 ...
 ```
 
@@ -140,6 +138,49 @@ linux:
 + Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/02%20-%20Ansible%20Modules
 + Documentation : https://docs.ansible.com/ansible/latest/user_guide/modules.html
 + Documentation : https://docs.ansible.com/ansible/latest/user_guide/modules_intro.html
+
+#### In a nutshell
+
+Modules are like libraries or extensions to a language. They provide an easy and abstracted access to functionalities such as :
+
++ Gathering facts
++ Installing software
++ Configuring devices
++ Running shell commands
++ Manipulating files and directories
+
+You can call modules either from the ansible shell or from a playbook. Examples follow.
+
+#### Gathering facts
+
+```bash
+ansible ubuntu -m setup | more
+```
+
+#### Running command line shell
+
+Reboot
+
+```bash
+ansible ubuntu1 -m command -a "/sbin/reboot -t now"
+```
+
+#### Controlling service
+
+Start cron
+
+```bash
+ansible ubuntu2 -m service -a "name=cron state=start"
+```
+
+#### Copying files
+
+```bash
+touch test
+ansible ubuntu2 -m copy -a "src=test dest=/home/ansible/"
+```
+
+
 
 ### YAML
 
@@ -245,5 +286,9 @@ Tutorial : [Introduction to playbooks]("https://github.com/spurin/masteringansib
 ### Privilege escalation
 
 + Tutorial : https://docs.ansible.com/ansible/latest/user_guide/become.html
+
+## Quizz
+
+https://forms.gle/KdzcAhrcugeoitqVA
 
 ## END OF DAY 2
