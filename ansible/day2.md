@@ -267,13 +267,17 @@ Run the following playbook :
 ...
 ```
 
-##### Loading a shared hosts file
+##### Loading a shared hosts file the dirty way
 
 Documentation : https://docs.ansible.com/ansible/latest/modules/lineinfile_module.html
 
+Create a directory files under your ansible working directory
+
+Add hosts file to the files directory and delete the line with 127.0.1.1 from hosts
+
 Run the following playbook to both update hostname and /etc/hosts
 
-```yml
+```yaml
 ---
 
 -
@@ -292,6 +296,51 @@ Run the following playbook to both update hostname and /etc/hosts
                           line: "127.0.1.1 {{inventory_hostname}}"
                           regexp: '^127\.0\.1\.1'
                           insertafter: 'localhost$'
+...
+```
+
+##### Loading a shared hosts file a better way
+
+Documentation : https://docs.ansible.com/ansible/latest/modules/template_module.html#template-module
+
+Create a templates directory under your ansible working directory
+
+Add a template hosts file to templates :
+
+```j2
+127.0.0.1 localhost
+127.0.1.1 {{inventory_hostname}}
+192.168.126.10 controller
+192.168.126.11 ubuntu1
+192.168.126.12 ubuntu2
+192.168.126.13 ubuntu3
+192.168.126.14 ubuntu4
+
+192.168.126.33 centos1
+192.168.126.34 centos2
+192.168.126.35 centos3
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+
+Modify your playbook as follows :
+
+```yaml
+-
+        hosts: all
+        tasks:
+                - name: modifiy hostname
+                  hostname:
+                          name: "{{inventory_hostname}}"
+                - name: load /etc/hosts
+                  template:
+                          src: templates/hosts.j2
+                          dest: /etc/hosts
 ...
 ```
 
