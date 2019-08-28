@@ -1,4 +1,4 @@
-# Ansible
+# Ansible, day 1
 
 ## Recommended resources
 
@@ -108,7 +108,7 @@ controler$ssh-keygen
 controler$ssh-copy-id ansible@192.168.126.10
 ```
 
-#### 3) Test the connection tu ubuntu1
+#### 3) Test the connection to ubuntu1
 
 ```bash
 controler$ssh -i id_rsa ansible@192.168.126.10
@@ -116,18 +116,19 @@ controler$ssh -i id_rsa ansible@192.168.126.10
 
 #### 4) Add ubuntu1 to the inventory
 
-On controler :
+On controller :
 
 + Edit /etc/ansible/hosts
 + Add line *ubuntu1* at the end of the file
 + Edit /etc/hosts
 + Add line *192.168.126.10 ubuntu1*
 
-Test the connection from the controler :
+Test the connection from the controller to all ansible stations :
 
 ```bash
 controler$ansible all -m ping
 ```
+
 #### 5) Add ansible user to sudo without password
 
 On controler and on ubuntu1 :
@@ -155,7 +156,7 @@ Network addresses :
 
 ## Local configuration
 
-We move our configuration file from /etc/ansible to our home directory (/home/ansible) :
+Move the configuration file from /etc/ansible to your home directory (/home/ansible) :
 
 ```bash
 controller$cp /etc/ansible/ansible.cfg /home/ansible/.ansible.cfg
@@ -174,15 +175,15 @@ inventory      = /home/ansible/deployment/hosts
 
 ### In a nutshell
 
-In an inventory : 
+In an inventory :
 
 + you can assign a machine to a group
-+ you can design a hierarchy of groups (parent groups and children) with many levels 
-+ You can any operations (facts gathering, vars setting, task, trigger) to a specific group
-+ you can define range based on machine names
++ you can design a hierarchy of groups (parent groups and children groups) with many levels
++ you can proceed any operation (facts gathering, vars setting, task, trigger) on a specific group
++ you can define a range based on machine names
 + you can apply variables (ssh port, ansible user, become password, ...) to every machines or a group of machines
 
-Static inventories may be write in any of the following formats :
+Static inventory file format may be :
 
 + yaml
 + json
@@ -203,36 +204,38 @@ Static inventories may be write in any of the following formats :
 | administration | NA | controller |
 | ubuntu | linux | controller, ubuntu 1 to 4 |
 
-## Modules
+### Yaml inventory file
 
-+ Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/02%20-%20Ansible%20Modules
-+ Documentation : https://docs.ansible.com/ansible/latest/user_guide/modules.html
+```yaml
+---
+all:
+        vars:
+                become: true
+application:
+        children:
+                production:
+                        hosts:
+                                ubuntu[1:2]
+                test:
+                        hosts:
+                                ubuntu[3:4]
+administration:
+        hosts:
+                localhost:
+                        ansible_connection: local
+linux:
+        children:
+                ubuntu:
+                        hosts:
+                                ubuntu[1:4]
+                        hosts:
+                                localhost
+...
+```
 
-## YAML
-
-Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/03%20-%20YAML
-
-## Playbooks
-
-Tutorial : [Introduction to playbooks]("https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/04%20-%20Ansible%20Playbooks%2C%20Breakdown%20of%20sections")
-
-## Variables
-
-+ Tutorial : [playbook variables]("https://github.com/PacktPublishing/Mastering-Ansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/05%20-%20Ansible%20Playbooks%2C%20Variables")
-+ Documentation : https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html
-
-## Facts
-
-+ Tutorial : [playbook facts]("https://github.com/PacktPublishing/Mastering-Ansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/06%20-%20Ansible%20Playbooks%2C%20Facts")
-+ Documentation : https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variables-discovered-from-systems-facts
-
-## Jinja2
-
-+ Tutorial : [jinja2]("https://github.com/PacktPublishing/Mastering-Ansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/07%20-%20Templating%20with%20Jinja2")
-+ Documentation : https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html
-
-## Wrap up
-
-+ Tutorial : [Wrap up of day1](https://github.com/PacktPublishing/Mastering-Ansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/08%20-%20Ansible%20Playbooks%2C%20Creating%20and%20Executing)
+To test the yaml inventory file from a controller terminal :
+```bash
+controller$ansible all -i hosts.yml -m ping
+```
 
 ## END OF DAY 1
