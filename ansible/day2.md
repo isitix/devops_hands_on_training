@@ -79,9 +79,59 @@ déconnexion
 Connection to 192.168.126.33 closed.
 ```
 
+4. Sudo without password for ansible user
+
+Tuto : https://www.cyberciti.biz/faq/how-to-sudo-without-password-on-centos-linux/
+
+```bash
+$su
+$visudo -f /etc/sudoers.d/ansible
+ansible ALL=NOPASSWD: ALL
+```
+
+
 ### Inventaire
 
+Add centos1 to /etc/hosts on controller
 
+Add centos1 to yaml file :
+
+```yaml
+---
+all:
+        vars:
+                ansible_become: true
+                ansible_user: ansible
+        hosts:
+                ubuntu4:
+                        ansible_become_pass: ansible
+application:
+        children:
+                production:
+                        hosts:
+                                ubuntu[1:2]
+                        hosts:
+                                centos1
+                test:
+                        hosts:
+                                ubuntu[3:4]
+administration:
+        hosts:
+                localhost:
+                        ansible_connection: local
+linux:
+        children:
+                ubuntu:
+                        hosts:
+                                ubuntu[1:4]
+                        hosts:
+                                localhost
+        children:
+                centos:
+                        hosts:
+                                centos1
+...
+```
 
 ## Core functionalities
 
