@@ -267,8 +267,33 @@ Run the following playbook :
 ...
 ```
 
+##### Loading a shared hosts file
 
+Documentation : https://docs.ansible.com/ansible/latest/modules/lineinfile_module.html
 
+Run the following playbook to both update hostname and /etc/hosts
+
+```yml
+---
+
+-
+        hosts: all
+        tasks:
+                - name: modifiy hostname
+                  hostname:
+                          name: "{{inventory_hostname}}"
+                - name: load common hosts file
+                  copy:
+                          src: files/hosts
+                          dest: /etc/hosts
+                - name: add a line for 127.0.1.1
+                  lineinfile:
+                          path: /etc/hosts
+                          line: "127.0.1.1 {{inventory_hostname}}"
+                          regexp: '^127\.0\.1\.1'
+                          insertafter: 'localhost$'
+...
+```
 
 ### Facts
 
