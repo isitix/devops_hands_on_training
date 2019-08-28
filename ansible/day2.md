@@ -182,6 +182,8 @@ ansible ubuntu2 -m copy -a "src=test dest=/home/ansible/"
 
 ### YAML
 
+#### YAML resources
+
 + Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/03%20-%20YAML
 + Specifications : https://yaml.org/spec/1.2/spec.html
 
@@ -200,17 +202,80 @@ YAML includes :
 Download files in the tutorial and run the python script on each example :
 
 ```bash
-show_yaml_python.py test.yml
+chmod u+X show_yaml_python.py
+show_yaml_python.py
 ```
 
 ### Playbooks
 
+#### Playbooks resources
+
 Tutorial : [Introduction to playbooks]("https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/04%20-%20Ansible%20Playbooks%2C%20Breakdown%20of%20sections")
+
+#### To run the tutorial
+
+Clone the repository into your ansible controller
+
+```bash
+git clone https://github.com/spurin/masteringansible.git
+```
+
+Goto the playbook subdirectories
+
+```bash
+cd "masteringansible/02 - Ansible Architecture and Design/04 - Ansible Playbooks, Breakdown of sections/02"
+```
+
+Remove the local (default) ansible configuration file 
+
+```bash
+mv ansible.cfg ansible.cfg.old
+```
+
+Run the example
+
+
+```bash
+ansible-playbook -i hosts motd-playbook.yml
+```
 
 ### Variables
 
+#### Variables resources
+
 + Tutorial : [playbook variables]("https://github.com/PacktPublishing/Mastering-Ansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/05%20-%20Ansible%20Playbooks%2C%20Variables")
 + Documentation : https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html
+
+#### Variables in action
+
+We want to update /etc/hostname and /etc/hosts on our 8 stations so that hostname value is the real hostname and /etc/hosts contains every existing hosts.
+
+##### Changing the hostname in /etc/hostname
+
+Documentation : https://docs.ansible.com/ansible/latest/modules/hostname_module.html
+
+Run the following playbook :
+
+```yml
+---
+-
+        hosts: all
+        tasks:
+                - name: show host name
+                  debug:
+                          msg: "{{inventory_hostname}}"
+                - name: update /etc/hostname
+                  copy:
+                          content: "{{inventory_hostname}}\n"
+                          dest: /etc/hostname
+                - name: modifiy hostname on the system
+                  hostname:
+                          name: "{{inventory_hostname}}"
+...
+```
+
+
+
 
 ### Facts
 
