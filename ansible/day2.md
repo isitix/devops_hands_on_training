@@ -139,7 +139,7 @@ linux:
 + Documentation : https://docs.ansible.com/ansible/latest/user_guide/modules.html
 + Documentation : https://docs.ansible.com/ansible/latest/user_guide/modules_intro.html
 
-#### In a nutshell
+#### Modules in a nutshell
 
 Modules are like libraries or extensions to a language. They provide an easy and abstracted access to functionalities such as :
 
@@ -154,7 +154,7 @@ You can call modules either from the ansible shell or from a playbook. Examples 
 #### Gathering facts
 
 ```bash
-ansible ubuntu -m setup | more
+ansible ubuntu3 -m setup
 ```
 
 #### Running command line shell
@@ -170,7 +170,7 @@ ansible ubuntu1 -m command -a "/sbin/reboot -t now"
 Start cron
 
 ```bash
-ansible ubuntu2 -m service -a "name=cron state=start"
+ansible ubuntu2 -m service -a "name=cron state=started"
 ```
 
 #### Copying files
@@ -180,11 +180,28 @@ touch test
 ansible ubuntu2 -m copy -a "src=test dest=/home/ansible/"
 ```
 
-
-
 ### YAML
 
-Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/03%20-%20YAML
++ Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/03%20-%20YAML
++ Specifications : https://yaml.org/spec/1.2/spec.html
+
+#### Yaml in a nutshell
+
+YAML includes :
+
++ Structure (document)
++ Lists
++ Dictionaries
++ Key-value pairs
++ Type inference
+
+#### Examples
+
+Download files in the tutorial and run the python script on each example :
+
+```bash
+show_yaml_python.py test.yml
+```
 
 ### Playbooks
 
