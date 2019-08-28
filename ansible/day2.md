@@ -261,14 +261,7 @@ Run the following playbook :
 -
         hosts: all
         tasks:
-                - name: show host name
-                  debug:
-                          msg: "{{inventory_hostname}}"
-                - name: update /etc/hostname
-                  copy:
-                          content: "{{inventory_hostname}}\n"
-                          dest: /etc/hostname
-                - name: modifiy hostname on the system
+                - name: hostname = inventory hostname
                   hostname:
                           name: "{{inventory_hostname}}"
 ...
