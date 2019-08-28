@@ -1,5 +1,88 @@
 # Ansible, day 2
 
+## Add centos 1 to 3 to the inventory
+### IP addresses
+| hostname | IP |
+|------|----|
+| centos1 | 192.168.126.33 |
+| centos2 | 192.168.126.34 |
+| centos3 | 192.168.126.35 |
+
+### Network configuration
+
+Example of configuration procedure : http://www.mustbegeek.com/configure-static-ip-address-in-centos/
+
+1. Edit the network configuration file :
+
+```bash
+$su
+$vi /etc/sysconfig/network-scripts/ifcfg-eth0
+```
+
+eth0 must be replaced by the id of your interface card.
+
+2. Reboot
+
+3. Edit the resolv.conf file
+
+```bash
+$su
+$vi /etc/resolv.conf
+nameserver 8.8.8.8
+:wq
+```
+
+### SSH
+
+1. Install openssh server
+
+Nota : ssh server is already installed if you've got a default cofiguration of centos
+
+```bash
+$su
+$yum install -y openssh-server
+```
+
+2. Test connection from controller
+
+```bash
+ansible@controller:~/deployment$ ssh ansible@192.168.126.33
+The authenticity of host '192.168.126.33 (192.168.126.33)' can't be established.
+ECDSA key fingerprint is SHA256:lJU+RaEF8d6RFzNyD/7nIDubAAVnCCgrfPR6qYFrht4.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '192.168.126.33' (ECDSA) to the list of known hosts.
+ansible@192.168.126.33's password: 
+Last login: Wed Aug 28 11:35:46 2019
+[ansible@localhost ~]$ exit
+déconnexion
+Connection to 192.168.126.33 closed.
+```
+
+3. Add you ssh key to the centos host
+
+```bash
+ansible@controller:~/deployment$ ssh-copy-id ansible@192.168.126.33
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/ansible/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+ansible@192.168.126.33's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'ansible@192.168.126.33'"
+and check to make sure that only the key(s) you wanted were added.
+
+ansible@controller:~/deployment$ ssh ansible@192.168.126.33
+Last login: Wed Aug 28 09:40:23 2019 from 192.168.126.10
+[ansible@localhost ~]$ exit
+déconnexion
+Connection to 192.168.126.33 closed.
+```
+
+### Inventaire
+
+
+
 ## Core functionalities
 
 ### Modules
