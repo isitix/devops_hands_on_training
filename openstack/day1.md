@@ -181,3 +181,19 @@ devstack                   : ok=3    changed=0    unreachable=0    failed=0    s
                           msg: "TODO"
 ...
 ```
+
+#### Add sysop user
+
+Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.html>
+
+```yml
+                - name: add sysop user with sudo privilege
+                  user:
+                          name: sysop
+                          comment: devstack user
+                          groups: users,ssh,sudo
+```
+
+#### Apt update and upgrade
+
+TODO
