@@ -62,3 +62,122 @@
 ### Additional resources
 
 + <https://docs.openstack.org/devstack/latest/index.html>
+
+### Hands on devstack
+
+#### Clone ubuntu1 vm to devstack
+
+Modify the IP address of the clone: 
+
+| hostname | IP address |
+|-----|-----|
+| devstack | 192.168.126.17 |
+
+#### Add to inventory on the controller
+
+Add the following line to your hosts.yml inventory file :
+
+```yml
+# hosts.yml
+openstack:
+        hosts:
+                devstack:
+```
+
+Add devstack hosts to /etc/hosts on the controller
+
+Add devstack to the hosts template file :
+
+```j2
+# templates/hosts.j2
+127.0.0.1 localhost
+127.0.1.1 {{inventory_hostname}}
+192.168.126.10 controller
+192.168.126.11 ubuntu1
+192.168.126.12 ubuntu2
+192.168.126.13 ubuntu3
+192.168.126.14 ubuntu4
+
+192.168.126.17 devstack
+
+192.168.126.33 centos1
+192.168.126.34 centos2
+192.168.126.35 centos3
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+
+#### Create a new playbook
+
+Create a new playbook to configure devstack
+
+```yml
+# openstack.yml
+---
+-
+        hosts: administration, openstack
+        tasks:
+                - name: modifiy hostname
+                  hostname:
+                          name: "{{inventory_hostname}}"
+                - name: load /etc/hosts
+                  template:
+                          src: templates/hosts.j2
+                          dest: /etc/hosts
+...
+```
+
+Run the new playbook from the controller :
+
+```bash
+$ansible-playbook openstack.yml
+PLAY [administration, openstack] ***********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [controller]
+ok: [devstack]
+
+TASK [modifiy hostname] ********************************************************
+ok: [controller]
+ok: [devstack]
+
+TASK [load /etc/hosts] *********************************************************
+ok: [controller]
+ok: [devstack]
+
+PLAY RECAP *********************************************************************
+controller                 : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+devstack                   : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+```
+
+#### Add the devstack configuration to the playbook
+
+```yml
+# openstack.yml
+---
+# global configuration
+- 
+        hosts: administration, openstack
+        tasks:
+                - name: modifiy hostname
+                  hostname:
+                          name: "{{inventory_hostname}}"
+                - name: load /etc/hosts
+                  template:
+                          src: templates/hosts.j2
+                          dest: /etc/hosts
+-
+# devstack VM configuration
+  # Creer un utilisateur sysop avec sudo sans mot de pass               
+        hosts: openstack
+        tasks:
+                - name: add sysop user with sudo privilege
+                  debug:
+                          msg: "TODO"
+...
+```
