@@ -295,14 +295,15 @@ Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.htm
         become_user: stack
         tasks:
                 - name: execute devstack installation script
-                  shell: /opt/devstack/stack.sh
+                  shell: "FORCE=yes /opt/devstack/stack.sh"
                   become_user: stack
                   args:
                           chdir: /opt/devstack
 ...
 ```
 
-```yml #host.yml
+```yml 
+#host.yml
 ---
 all:
         vars:
@@ -339,7 +340,6 @@ linux:
                         hosts:
                                 centos[1:3]:
 ...
-
 ```
 
 ```yml
