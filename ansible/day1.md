@@ -2,10 +2,10 @@
 
 ## Recommended resources
 
-+ Ansible online reference guide : https://docs.ansible.com/
-+ Source code of Packt ansible course : https://github.com/spurin/masteringansible
++ Ansible online reference guide : <https://docs.ansible.com/>
++ Source code of Packt ansible course : <https://github.com/spurin/masteringansible>
 
-The Packt source code comes with a video course : https://subscription.packtpub.com/video/virtualization-and-cloud/9781788629515
+The Packt source code comes with a video course : <https://subscription.packtpub.com/video/virtualization-and-cloud/9781788629515>
 
 ## Course track
 
@@ -21,7 +21,7 @@ The Packt source code comes with a video course : https://subscription.packtpub.
 
 ## Introduction
 
-Watch the ansible introduction video : https://www.ansible.com/resources/videos/quick-start-video
+Watch the ansible introduction video : <https://www.ansible.com/resources/videos/quick-start-video>
 
 ## Prerequisites
 
@@ -47,15 +47,15 @@ Many options :
 3. Take a snapshot
 4. Install ansible using apt
 
-We install following Ansible official installation guide for Ubuntu : https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-the-control-node. The complete reference documentation is here : https://docs.ansible.com/ansible/latest/installation_guide/index.html
+We install following Ansible official installation guide for Ubuntu : <https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-the-control-node>. The complete reference documentation is here : <https://docs.ansible.com/ansible/latest/installation_guide/index.html>.
 
 ### SSH authentication
 
-Reference documentation : https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
+Reference documentation : <https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server>
 
 ## Getting started
 
-Tutorial : https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html
+Tutorial : <https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html>
 
 ### Adding a local machine to the inventory
 
@@ -68,20 +68,21 @@ Tutorial : https://docs.ansible.com/ansible/latest/user_guide/intro_getting_star
 
 ### Accessing a remote machine *ubuntu1*
 
-To get a machine ansible ready, see : https://github.com/isitix/isitix.github.io/blob/master/_posts/2018-06-19-debian-ansible-ready.markdown
+To get a machine ansible ready, see : <https://github.com/isitix/isitix.github.io/blob/master/_posts/2018-06-19-debian-ansible-ready.markdown>
 
 #### Setting a new VM
 
 + Clone your ubuntu VM (snapshot before ansible)
-+ Edit /etc/hosts and /etc/hostname to modify hostname 
++ Edit /etc/hosts and /etc/hostname to modify hostname
 
-#### 1) Configure a fixed Ip address
-To configure a fixed ip address in Ubuntu, see : https://www.configserverfirewall.com/ubuntu-linux/configure-ubuntu-server-static-ip-address/
+#### 1) Configure a static Ip address
+
+To configure a fixed ip address in Ubuntu, see : <https://www.configserverfirewall.com/ubuntu-linux/configure-ubuntu-server-static-ip-address/>
 
 + Go to /etc/netplan
 + Edit 50-cloud-init.yaml file
 
-Add the following lines to the yaml file : 
+Add the following lines to the yaml file :
 
 ```yaml
 network:
@@ -96,6 +97,7 @@ network:
 ```
 
 Then goto a shell on the controller and type :
+
 ```shell
 sudo netplan apply
 ip add
@@ -170,8 +172,8 @@ inventory      = /home/ansible/deployment/hosts
 
 ## Static inventories
 
-+ Tutorial : https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/01%20-%20Ansible%20Inventories
-+ Documentation : https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
++ Tutorial : <https://github.com/spurin/masteringansible/tree/master/02%20-%20Ansible%20Architecture%20and%20Design/01%20-%20Ansible%20Inventories>
++ Documentation : <https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html>
 
 ### In a nutshell
 
@@ -233,6 +235,7 @@ linux:
 ```
 
 To test the yaml inventory file from a controller terminal :
+
 ```bash
 controller$ansible all -i hosts.yml -m ping
 ```
