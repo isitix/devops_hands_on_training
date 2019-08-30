@@ -16,6 +16,21 @@
 
 Packstack documentation : <https://wiki.openstack.org/wiki/Packstack>
 
+Message at the end of the procedure : 
+
+```bash
+Additional information:
+ * Parameter CONFIG_NEUTRON_L2_AGENT: You have choosen OVN neutron backend. Note that this backend does not support LBaaS, VPNaaS or FWaaS services. Geneve will be used as encapsulation method for tenant networks
+ * A new answerfile was created in: /root/packstack-answers-20190830-100934.txt
+ * Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.
+ * File /root/keystonerc_admin has been created on OpenStack client host 192.168.126.65. To use the command line tools you need to source the file.
+ * To access the OpenStack Dashboard browse to http://192.168.126.65/dashboard .
+Please, find your login credentials stored in the keystonerc_admin in your home directory.
+ * The installation log file is available at: /var/tmp/packstack/20190830-100933-4TP3Ag/openstack-setup.log
+ * The generated manifests are available at: /var/tmp/packstack/20190830-100933-4TP3Ag/manifests
+```
+
+
 ### Openstack modules
 
 Modules list, book p18 (ch1)
@@ -30,9 +45,13 @@ Take a snapshot of the VM.
 
 Run Openstack Tempest test :
 
+Documentation available here :
+
 + Ch2
 + <https://docs.openstack.org/tempest/latest/>
 + <https://docs.openstack.org/tempest/latest/field_guide/index.html>
+
+Tutorial : <https://blogs.rdoproject.org/2016/09/running-tempest-on-rdo-openstack-newton/>
 
 ### Access to Openstack Dashboard (Horizon)
 
