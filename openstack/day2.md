@@ -6,6 +6,16 @@
 2. Clone it
 3. Execute the following procedure : <http://devopspy.com/cloud-computing/openstack-all-in-one-setup-centos/>
 
+### IP address
+
+| Hostname | IP |
+|------|-----|
+| packstack | 192.168.126.65 |
+
+### Executing the procedure
+
+Packstack documentation : <https://wiki.openstack.org/wiki/Packstack>
+
 ### Openstack modules
 
 Modules list, book p18 (ch1)
@@ -92,6 +102,8 @@ Test the installation of Kolla Openstack
 + <https://gitlab.inria.fr/discovery/kolla-ansible>
 + <https://docs.openstack.org/kolla-ansible/stein/user/>
 
+## QCM Openstack
+
+<https://forms.gle/CUrzSLwn8aS9GGGK9>
 
 ## END OF DAY 2
-

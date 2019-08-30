@@ -17,9 +17,4 @@ We'll try to give you big pictures, opinionated hints on dos and don'ts, and han
 
 ### Big pictures
 
-
-
-
-
 ## Course content
-
