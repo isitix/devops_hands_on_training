@@ -89,13 +89,7 @@ Defaults credentials are stored in the following files :
 + demo user : /root/keystonerc_demo
 + Ch3.1
 
-### Test the Openstack Rest API
-
-+ Ch3.2
-
-XXXX TO IMPROVE
-
-### Configure a tenant
+### Configure a project
 
 + Ch3.3
 
@@ -107,10 +101,6 @@ To create a new project:
 openstack project create NEW_PROJECT_NAME
 ```
 
-### Configure quotas per project
-
-+ Ch3.4
-
 ## Ansible ready version
 
 + Translate the devstack shell installation procedure into an ansible playbook.
@@ -118,34 +108,37 @@ openstack project create NEW_PROJECT_NAME
 
 ## Openstack on OVH
 
+### Activate Openstack on OVH
+
++ Goto your management console
++ Activate public cloud
++ Create a new project
++ Goto Users&Roles
++ Add a user with the desired role
+
 ### Connect to Horizon
 
-+ <https://horizon.cloud.ovh.net>
++ Go to OVH Horizon Web portail : <https://horizon.cloud.ovh.net>
++ Use the login and password defined previously
 
-### Test the previous tutorial on OVH Horizon
+### Create an instance
 
-+ Ch2.3
-+ Ch2.4
++ Test instance creation on OVH public cloud
++ ssh into the instance using your public-private keys pair
 
 ### Install the environment to use Openstack api
 
 <https://docs.ovh.com/gb/en/public-cloud/prepare_the_environment_for_using_the_openstack_api/>
 
-### Test the Openstack CLI on OVH
+### Connect to OVH Public Cloud using the CLI
 
-+ Ch3.1
-
-### Test the Openstack Rest API on OVH
-
-+ Ch3.2
+The procedure is explained in the section "Test the Openstack CLI".
 
 ### Install and test Heat on OVH
 
 + <https://docs.ovh.com/gb/en/public-cloud/deploy-infrastructure-with-openstack-heat/>
 
-### Ansible playbook for OVH Openstack environment
-
-Write an Ansible playbook to install OVH Openstack environment
+XXX TODO
 
 ## Bonus : Openstack on Docker with Ansible
 
