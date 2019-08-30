@@ -76,10 +76,9 @@
 
 + <https://docs.openstack.org/devstack/latest/index.html>
 
-
 ### Clone ubuntu1 vm to devstack
 
-Modify the IP address of the clone: 
+Modify the IP address of the clone:
 
 | hostname | IP address |
 |-----|-----|
@@ -95,6 +94,7 @@ openstack:
         hosts:
                 devstack:
 ```
+
 Add devstack hosts to /etc/hosts on the controller
 
 Add devstack to the hosts template file :
@@ -162,8 +162,8 @@ ok: [controller]
 ok: [devstack]
 
 PLAY RECAP *********************************************************************
-controller                 : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-devstack                   : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+controller                 : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+devstack                   : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 ### Add the devstack configuration to the playbook
@@ -172,7 +172,7 @@ devstack                   : ok=3    changed=0    unreachable=0    failed=0    s
 # openstack.yml
 ---
 # global configuration
-- 
+-
         hosts: administration, openstack
         tasks:
                 - name: modifiy hostname
@@ -184,7 +184,7 @@ devstack                   : ok=3    changed=0    unreachable=0    failed=0    s
                           dest: /etc/hosts
 -
 # devstack VM configuration
-  # Creer un utilisateur sysop avec sudo sans mot de pass               
+  # Creer un utilisateur sysop avec sudo sans mot de pass
         hosts: openstack
         tasks:
                 - name: add sysop user with sudo privilege
@@ -255,7 +255,7 @@ Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.htm
                           dest: /etc/hosts
 -
 # devstack VM configuration
-  # Creer un utilisateur sysop avec sudo sans mot de pass               
+  # Creer un utilisateur sysop avec sudo sans mot de pass
         hosts: openstack
         become: yes
         vars:
@@ -359,6 +359,7 @@ linux:
                                 centos[1:3]:
 ...
 ```
+
 #### Templates
 
 ```yml
@@ -491,8 +492,10 @@ SWIFT_REPLICAS=1
 SWIFT_DATA_DIR=$DEST/data
 ```
 
-### Installation...
+XXXX Errors while executing ./stack.sh
 
-The installation process works but there are still many errors. We are looking for another way to install devstack.
+### Conclusion
+
+The installation process works but there are still many errors. We should probably choose our target operating system version more carefully. We are looking for another way to install devstack.
 
 ## END OF DAY 1

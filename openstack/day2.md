@@ -16,7 +16,7 @@
 
 Packstack documentation : <https://wiki.openstack.org/wiki/Packstack>
 
-Message at the end of the procedure : 
+Message at the end of the procedure :
 
 ```bash
 Additional information:
@@ -30,7 +30,6 @@ Please, find your login credentials stored in the keystonerc_admin in your home 
  * The generated manifests are available at: /var/tmp/packstack/20190830-100933-4TP3Ag/manifests
 ```
 
-
 ### Openstack modules
 
 Modules list, book p18 (ch1)
@@ -43,7 +42,13 @@ Take a snapshot of the VM.
 
 ### Tempest test
 
-Run Openstack Tempest test :
+#### Tempest test use cases
+
++ Validating development on Openstack
++ Benchmarking your Openstack instance (design, performance, hardware architecture)
++ Defining and running acceptance tests for an Openstack integration project
+
+#### Hands on Tempest
 
 Documentation available here :
 
@@ -53,22 +58,42 @@ Documentation available here :
 
 Tutorial : <https://blogs.rdoproject.org/2016/09/running-tempest-on-rdo-openstack-newton/>
 
+XXXX Problem with the tutorial to launch tests
+
 ### Access to Openstack Dashboard (Horizon)
 
 + Log into the dashboard
 + Ch2.3
 
+To get the admin credentials :
+
+```bash
+sudo cat /root/keystonerc_admin
+```
+
+Then open a browser and goto the URL <http://PACKSTACKIP/dashboard>
+
 ### Create and launch your first VM
 
 + Ch2.4
 
+XXXX network error while provisioning the new VM
+
 ### Test the Openstack CLI
 
+To configure the CLI, follow the instructions here : <https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/4/html/End_User_Guide/cli_openrc.html>
+
+Defaults credentials are stored in the following files :
+
++ admin user : /root/keystonerc_admin
++ demo user : /root/keystonerc_demo
 + Ch3.1
 
 ### Test the Openstack Rest API
 
 + Ch3.2
+
+XXXX TO IMPROVE
 
 ### Configure a tenant
 
