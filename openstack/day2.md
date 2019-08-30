@@ -99,7 +99,15 @@ XXXX TO IMPROVE
 
 + Ch3.3
 
-### Configure quotas
+XXXX tenant is deprecated. It has been replaced by project.
+
+To create a new project:
+
+```bash
+openstack project create NEW_PROJECT_NAME
+```
+
+### Configure quotas per project
 
 + Ch3.4
 
