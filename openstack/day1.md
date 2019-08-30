@@ -24,6 +24,19 @@
 
 + <https://docs.openstack.org/puppet-openstack-guide/latest/contributor/module-list.html>
 
+| Module name | Role |
+|-------|---------|
+| Keystone | Authentication and authorization |
+| Swift | Object storage |
+| Cinder | Block storage |
+| Manila | File storage |
+| Nova | Compute |
+| Neutron | Network |
+| Glance | Image registry |
+| Heat | Orchestration |
+| Ceilometer, Aodh, and Gnocchi | Telemetry |
+| Horizon | Dashboard |
+
 ### Openstack operation
 
 + <https://docs.openstack.org/operations-guide/index.html>
@@ -63,9 +76,8 @@
 
 + <https://docs.openstack.org/devstack/latest/index.html>
 
-### Hands on devstack
 
-#### Clone ubuntu1 vm to devstack
+### Clone ubuntu1 vm to devstack
 
 Modify the IP address of the clone: 
 
@@ -73,7 +85,7 @@ Modify the IP address of the clone:
 |-----|-----|
 | devstack | 192.168.126.17 |
 
-#### Add to inventory on the controller
+### Add to inventory on the controller
 
 Add the following line to your hosts.yml inventory file :
 
@@ -83,7 +95,6 @@ openstack:
         hosts:
                 devstack:
 ```
-
 Add devstack hosts to /etc/hosts on the controller
 
 Add devstack to the hosts template file :
@@ -112,7 +123,7 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ```
 
-#### Create a new playbook
+### Create a new playbook
 
 Create a new playbook to configure devstack
 
@@ -155,7 +166,7 @@ controller                 : ok=3    changed=0    unreachable=0    failed=0    s
 devstack                   : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 ```
 
-#### Add the devstack configuration to the playbook
+### Add the devstack configuration to the playbook
 
 ```yml
 # openstack.yml
@@ -182,7 +193,7 @@ devstack                   : ok=3    changed=0    unreachable=0    failed=0    s
 ...
 ```
 
-#### Add sysop user
+### Add sysop user
 
 Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.html>
 
@@ -201,7 +212,7 @@ Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.htm
 
 ```
 
-#### Apt update and upgrade
+### Apt update and upgrade
 
 ```yml
                 - name: apt update, upgrade, autoclean, autoremove, purge
@@ -214,7 +225,7 @@ Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.htm
                           upgrade: yes
 ```
 
-#### Install git
+### Install git
 
 ```yml
                 - name: install git
@@ -223,13 +234,15 @@ Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.htm
                         state: latest
 ```
 
-#### Final version of the playbook
+### Final version of the configuration files
+
+#### Playbook
 
 ```yml
 # openstack.yml
 ---
 # global configuration
-- 
+-
         hosts: administration, openstack
         become: yes
         tasks:
@@ -248,20 +261,6 @@ Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.htm
         vars:
                 devstack_password: devstack
         tasks:
-                - name: add sysop user with sudo privilege
-                  user:
-                          name: sysop
-                          comment: devstack user
-                          groups: users,ssh,sudo
-                          state: present
-                          home: /home/sysop
-                          password: ansible
-                - name: add sudo to sysop no passwd
-                  copy:
-                          content: 'sysop ALL=NOPASSWD: ALL'
-                          dest: /etc/sudoers.d/sysop
-                          mode: 0400
-                          force: no
                 - name: apt update, upgrade, autoclean, autoremove, purge
                   apt:
                           autoclean: yes
@@ -283,26 +282,45 @@ Documentation : <https://docs.ansible.com/ansible/latest/modules/user_module.htm
                           version: stable/stein
                           update: no
                 - name: create stack user
-                  shell: tools/create-stack-user.sh
-                  args:
-                          chdir: /opt/devstack
+                  user:
+                          create_home: yes
+                          home: /opt/stack
+                          groups: sudo
+                          append: yes
+                          name: stack
+                          shell: /bin/bash
+                - name: add stack user to sudo no password
+                  copy:
+                          content: 'stack ALL=(ALL:ALL) NOPASSWD:ALL'
+                          dest: /etc/sudoers.d/stack
+                          mode: 0440
+                - name: chown /opt/devstack/ to stack
+                  file:
+                          path: /opt/devstack
+                          state: directory
+                          recurse: yes
+                          owner: stack
+                          group: stack
+                - name: set rwx right on /opt/devstack
+                  file:
+                          path: /opt/devstack/
+                          state: directory
+                          recurse: no
+                          mode: '0755'
                 - name: copy local.conf template to /opt/devstack
                   template:
                           src: templates/local.j2
                           dest: /opt/devstack/local.conf
--
-        hosts: openstack
-        become_user: stack
-        tasks:
                 - name: execute devstack installation script
-                  shell: "FORCE=yes /opt/devstack/stack.sh"
-                  become_user: stack
+                  shell: "sudo -u stack FORCE=yes /opt/devstack/stack.sh"
                   args:
                           chdir: /opt/devstack
 ...
 ```
 
-```yml 
+#### Inventory
+
+```yml
 #host.yml
 ---
 all:
@@ -341,6 +359,7 @@ linux:
                                 centos[1:3]:
 ...
 ```
+#### Templates
 
 ```yml
 # templates/hosts.j2
@@ -471,3 +490,9 @@ SWIFT_REPLICAS=1
 # if it does not exist.
 SWIFT_DATA_DIR=$DEST/data
 ```
+
+### Installation...
+
+The installation process works but there are still many errors. We are looking for another way to install devstack.
+
+## END OF DAY 1
