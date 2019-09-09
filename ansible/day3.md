@@ -40,6 +40,10 @@
 
 ## Structuring Ansible playbooks
 
+### Directory layout
+
+<https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#directory-layout>
+
 ### Include and imports
 
 + Tutorial : [Include and import](https://github.com/spurin/masteringansible/tree/master/04%20-%20Structuring%20Ansible%20Playbooks/01%20-%20Using%20Include%20and%20Import)

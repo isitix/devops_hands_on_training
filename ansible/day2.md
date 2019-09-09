@@ -14,7 +14,7 @@
 
 Example of configuration procedure : <http://www.mustbegeek.com/configure-static-ip-address-in-centos/>
 
-#### Edit the network configuration file :
+#### Edit the network configuration file
 
 ```bash
 $su
