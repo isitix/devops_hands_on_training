@@ -106,6 +106,63 @@ Read the following documentation :
 + <https://kubernetes.io/docs/concepts/architecture/nodes>
 + <https://en.wikipedia.org/wiki/Kubernetes>
 
+### Kubernetes in a nutshell
+
+#### Functionalities
+
+See <https://kubernetes.io>
+
++ Service discovery and load balancing
++ Storage orchestration
++ Automated rollouts and rollbacks
++ Batch execution
++ Automatic bin packing
++ Self-healing
++ Secret and configuration management
++ Horizontal scaling
+
+#### Core components
+
+See <https://kubernetes.io/docs/concepts/overview/components/>
+
++ Master components = cluster control plane = controller
+  + kube-apiserver
+  + etcd
+  + kube-scheduler
+  + kube-controller-manager
+  + cloud-controller-manager
++ Node components = cluster compute plane = worker
+  + kubelet
+  + kube-proxy
+  + container runtime
++ Addons = cross-concern services
+  + DNS
+  + Web UI (Dashboard)
+  + Container resource monitoring
+  + Cluster-level logging
+
+#### Conceptual model (abstract model)
+
+See <https://en.wikipedia.org/wiki/Kubernetes>
+
++ Namespaces (multi-tenancy) : contains other objects
+
+Application hierarchy :
+
++ Services (service composition and orchestration) : contains pods
++ Pods (collocated containers) : contains containers
++ containers
+
+Service to pods :
+
++ Volumes : data persistance for pods
++ Secrets : secrets (key and cipher / decipher) management for pods
++ Deployment : horizontal scaling of pods
+
+### Rancher architecture
+
+<https://rancher.com/docs/rancher/v2.x/en/overview/architecture/>
+
 ### Installing rancher
 
 <https://rancher.com/docs/rancher/v2.x/en/quick-start-guide/deployment/quickstart-manual-setup/>
@@ -128,9 +185,17 @@ Wait for the cluster to become active.
 
 ### Deploying workload
 
-Read this article : <https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0>
+#### Tutorial
 
 Follow the instructions here : <https://rancher.com/docs/rancher/v2.x/en/quick-start-guide/workload/quickstart-deploy-workload-ingress/>
+
+#### Network configurations
+
+Read this article : <https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0>
+
+## Quizz
+
+<https://forms.gle/SwXc8PyQPqvBeygcA>
 
 ## Introducing K3S
 
