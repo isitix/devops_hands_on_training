@@ -161,7 +161,25 @@ Service to pods :
 
 ### Rancher architecture
 
-<https://rancher.com/docs/rancher/v2.x/en/overview/architecture/>
+See <https://rancher.com/docs/rancher/v2.x/en/overview/architecture/>
+
+Notes :
+Rancher server is a dedicated architecture to manage K8S clusters
+
+Rancher server includes the following components  specific to rancher
+
++ Auth proxy
++ Rancher API Server
++ Cluster controller
++ Cluster Agent
+
+Rancher server offers a standard kubectl API. Rancher server uses etcd to store objects. The cluster agent runs on K8S master node.
+
+Rancher control plane nodes (etcd or controller) are unschedulable. You should not add worker role to these nodes.
+
+### Production cluster design guidelines
+
+See <https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/production/>. 
 
 ### Installing rancher
 
@@ -185,11 +203,34 @@ Wait for the cluster to become active.
 
 ### Deploying workload
 
-#### Tutorial
+#### Rancher hello world example
 
 Follow the instructions here : <https://rancher.com/docs/rancher/v2.x/en/quick-start-guide/workload/quickstart-deploy-workload-ingress/>
 
-#### Network configurations
+#### Deploying docker getting started image
+
++ Push the image to Docker hub
++ Add a new workload referencing the image (username/image_namge:tag_value)
++ launch the workload
++ Add a load balancer to access the container
+
+#### Deploying a container using kubectl
+
++ Install kubectl on Rancher controller (docker1) <https://kubernetes.io/docs/tasks/tools/install-kubectl/>
++ Connect to Rancher controller with kubectl <https://rancher.com/docs/rancher/v2.x/en/cluster-admin/kubectl/>
++ Launch a container on K8S with kubectl <https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/>
++ Creating a service with kubectl <https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/>
+
+#### Deploying a stateless application using a YAML file
+
++ Follow these instructions <https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/>
+
+### Further examples from "Kubernetes in action" book
+
++ Code source : <https://github.com/luksa/kubernetes-in-action>
++ Book : <https://www.manning.com/books/kubernetes-in-action>
+
+### Network configurations details
 
 Read this article : <https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0>
 
