@@ -203,10 +203,42 @@ nginx['ssl_certificate_key'] = "{{gitlab_key}}"
 
 ## Initialisation de Gitlab
 
-+ Add https and ssh to gitlab server
-+ Add a user account (imie)
++ Add a standard user account (ansible)
 + Connect to gitlab with the new user account
 
 ## Test an example of application
 
 See <https://docs.gitlab.com/ee/ci/examples/test-clojure-application.html>
+
+### Configure the git environment
+
++ Add a project "clojure-web-application" to ansible account on the internat gitlab
++ Clone the project on your local computer
+
+```bash
+ansible@controller:~/gitlab$ git config --global http.sslVerify false
+ansible@controller:~/gitlab$ git clone https://192.168.126.113.xip.io/ansible/clojure-web-application.git
+```
+
++ Add the master branch of the project from gitlab
+
+```bash
+ansible@controller:~/gitlab/clojure-web-application$ git remote add gitlab https://gitlab.com/dzaporozhets/clojure-web-application.git
+ansible@controller:~/gitlab/clojure-web-application$ git pull gitlab master
+```
+
++ Push the master branch to the internal gitlab
+
+```bash
+ansible@controller:~/gitlab/clojure-web-application$ git push origin master
+Username for 'https://192.168.126.113.xip.io': ansible
+Password for 'https://ansible@192.168.126.113.xip.io': 
+Enumerating objects: 149, done.
+Counting objects: 100% (149/149), done.
+Compressing objects: 100% (70/70), done.
+Writing objects: 100% (149/149), 81.79 KiB | 40.89 MiB/s, done.
+Total 149 (delta 66), reused 149 (delta 66)
+remote: Resolving deltas: 100% (66/66), done.
+To https://192.168.126.113.xip.io/ansible/clojure-web-application.git
+ * [new branch]      master -> master
+```
