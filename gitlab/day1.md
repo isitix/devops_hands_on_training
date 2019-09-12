@@ -21,7 +21,13 @@ Features shared with Gihub :
 
 Available both as SAAS or as self-hosted
 
-Many versions with different licenses <https://www.howtoforge.com/tutorial/how-to-install-and-configure-gitlab-on-ubuntu-1804/>
+Many versions with different licenses <https://about.gitlab.com/pricing/>
+
+## Version flow
+
+See <https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow>
+
+Flow specific to Gitlab <https://docs.gitlab.com/ee/workflow/gitlab_flow.html>
 
 ## Installation requirements
 
@@ -116,3 +122,13 @@ Test this procedure <https://docs.gitlab.com/omnibus/docker/>
 + Connect to gitlab with your browser http://<PUBLIC_IP>
 + Customize the password of the root account (login name = root)
 + Login
+
+## Initialisation de Gitlab
+
++ Ajouter le chiffrement https, SSH
++ Créer un compte utilisateur imie
++ Se connecter avec ce compte
+
+## Test un exemple d'application
+
++ Test l'exemple <https://docs.gitlab.com/ee/ci/examples/test-clojure-application.html>

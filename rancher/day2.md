@@ -45,7 +45,7 @@ ansible@docker1:~/webcontent$ touch cloud-config.yml
 wget 192.168.126.97:8070/cloud-config.yml
 ```
 
-We define our cloud-config.yml file as follows :
+We define the file cloud-config.yml as follows :
 
 ```yml
 # cloud-config.yml
@@ -254,6 +254,10 @@ Install using Ansible :
     name: kubectl
 ```
 
+#### The three methods to apply a configuration to a kubernetes cluster
+
+See <https://kubernetes.io/docs/concepts/overview/working-with-objects/object-management/>
+
 #### Deploying a container using kubectl
 
 + Connect to Rancher controller with kubectl <https://rancher.com/docs/rancher/v2.x/en/cluster-admin/kubectl/>
@@ -276,9 +280,3 @@ Read this article : <https://medium.com/google-cloud/kubernetes-nodeport-vs-load
 ## Quizz
 
 <https://forms.gle/SwXc8PyQPqvBeygcA>
-
-## Introducing K3S
-
-## Deploying K3S
-
-## Using K3OS

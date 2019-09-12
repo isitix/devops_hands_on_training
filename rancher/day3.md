@@ -1,4 +1,4 @@
-# Day 2 : k3s
+# Day 3 : k3s
 
 ## Introducing K3S
 
