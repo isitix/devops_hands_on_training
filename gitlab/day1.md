@@ -111,6 +111,7 @@ and add the corresponding handler:
 # /roles/gitlab/handlers/main.yml
 - name: refonfigure gitlab
   shell: gitlab-ctl reconfigure
+  listen: reconfigure gitlab
 ```
 
 ## Running gitlab in a container
@@ -119,16 +120,93 @@ Test this procedure <https://docs.gitlab.com/omnibus/docker/>
 
 ## Browsing the web interface
 
-+ Connect to gitlab with your browser http://<PUBLIC_IP>
++ Connect to gitlab with your browser <http://<PUBLIC_IP>>
 + Customize the password of the root account (login name = root)
 + Login
 
+## Adding https access to gitlab
+
+### Generating self-signed certificate using 192.168.126.113.xip.io DNS name :
+
+```bash
+ansible@gitlab1:~$ sudo openssl genrsa -out "/etc/gitlab/ssl/gitlab.key" 2048
+```
+
+```bash
+Generating RSA private key, 2048 bit long modulus (2 primes)
+.................................................+++++
+....................................................................+++++
+e is 65537 (0x010001)
+```
+
+```bash
+ansible@gitlab1:~$ sudo openssl req -new -key "/etc/gitlab/ssl/gitlab.key" -out "/etc/gitlab/ssl/gitlab.csr" 
+```
+
+```bash
+Can't load /home/ansible/.rnd into RNG
+139690523541952:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/home/ansible/.rnd
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:FR
+State or Province Name (full name) [Some-State]:FR
+Locality Name (eg, city) []:FR
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:FR
+Organizational Unit Name (eg, section) []:FR 
+Common Name (e.g. server FQDN or YOUR name) []:192.168.126.113.xip.io
+Email Address []:mikael.dautrey@isitix.com
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+```
+
+```bash
+ansible@gitlab1:~$ sudo openssl x509 -req -days 365 -in "/etc/gitlab/ssl/gitlab.csr" -signkey "/etc/gitlab/ssl/gitlab.key"  -out "/etc/gitlab/ssl/gitlab.crt"
+```
+
+```bash
+Signature ok
+subject=C = FR, ST = FR, L = FR, O = FR, OU = FR, CN = 192.168.126.113.xip.io, emailAddress = mikael.dautrey@isitix.com
+Getting Private key
+```
+
+### Updating gitlab configuration template
+
+```yml
+# ansible playbook
+- hosts: gitlab1
+  vars:
+    external_url: "https://192.168.126.113.xip.io"
+    gitlab_crt: "/etc/gitlab/ssl/gitlab.crt"
+    gitlab_key: "/etc/gitlab/ssl/gitlab.key"
+  roles:
+    - linux
+    - gitlab
+```
+
+```yml
+# roles/gitlab/templates/gitlab.rb.j2
+external_url '{{external_url}}'
+
+nginx['redirect_http_to_https'] = true
+nginx['ssl_certificate'] = "{{gitlab_crt}}"
+nginx['ssl_certificate_key'] = "{{gitlab_key}}"
+
+```
+
 ## Initialisation de Gitlab
 
-+ Ajouter le chiffrement https, SSH
-+ Créer un compte utilisateur imie
-+ Se connecter avec ce compte
++ Add https and ssh to gitlab server
++ Add a user account (imie)
++ Connect to gitlab with the new user account
 
-## Test un exemple d'application
+## Test an example of application
 
-+ Test l'exemple <https://docs.gitlab.com/ee/ci/examples/test-clojure-application.html>
+See <https://docs.gitlab.com/ee/ci/examples/test-clojure-application.html>
