@@ -221,6 +221,7 @@ Install kubectl on Rancher controller (docker1) <https://kubernetes.io/docs/task
 Install using Ansible :
 
 ```yml
+# roles/kubectl/tasks/main.yml
 # installation documentation : https://kubernetes.io/docs/tasks/tools/install-kubectl/
 - name: install apt-transport-https
   apt:
