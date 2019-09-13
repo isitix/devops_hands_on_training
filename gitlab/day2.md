@@ -152,11 +152,11 @@ A runner is a runtime that processes integration pipelines. You must add runners
 
 See <https://docs.gitlab.com/runner/>
 
-### Installing a runner on kubernetes
+## Installing a runner on kubernetes
 
 PB!!!
 
-### Installing a runner on Ubuntu
+## Installing a runner on Ubuntu
 
 Follow the steps :
 
@@ -166,7 +166,7 @@ Follow the steps :
 
 in the documentation <https://docs.gitlab.com/runner/>
 
-#### Installing on docker1 with ansible
+### Installing a runner on a dedicated VM, gitlabrunner1, with ansible
 
 Warning : gitlab is not compatible with the latest version of Ubuntu, Ubuntu 19.
 
@@ -175,7 +175,6 @@ Ajout d'une nouvelle machine :
 | Hostname | IP |
 |---------|-------|
 | gitlabrunner1 | 192.168.126.114 |
-
 
 Task:
 
@@ -233,8 +232,73 @@ Role:
     state: present
 ```
 
+### Registering the Ubuntu runner
 
+The runner calls a runner executor, either ssh, bash, docker, ... To run any kind of work on our runner, we install docker on the runner via docker-machine.
 
+```bash
+ansible@docker1:~$ docker-machine create --driver generic --generic-ip-address 192.168.126.114 --generic-ssh-key ~/.ssh/id_rsa --generic-ssh-user ansible gitlabrunner1
+```
+
+Then we get our url and token on gitlab web GUI project page, settings->CI/CD->Runner
+
+```txt
+URL : https://192.168.126.113.xip.io/
+Token : 5usmKyjUfxEKac_4-EJ_
+```
+
+We execute the register command : 
+
+```bash
+ansible@gitlabrunner1:~$ sudo gitlab-runner register
+Running in system-mode.                            
+                                                   
+Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):
+https://192.168.126.113.xip.io/
+Please enter the gitlab-ci token for this runner:
+5usmKyjUfxEKac_4-EJ_
+Please enter the gitlab-ci description for this runner:
+[gitlabrunner1]: gitlabrunner1
+Please enter the gitlab-ci tags for this runner (comma separated):
+
+Whether to lock the Runner to current project [true/false]:
+[true]: 
+ERROR: Registering runner... failed                 runner=5usmKyjU status=couldn't execute POST against https://192.168.126.113.xip.io/api/v4/runners: Post https://192.168.126.113.xip.io/api/v4/runners: x509: certificate signed by unknown authority
+PANIC: Failed to register this runner. Perhaps you are having network problems 
+```
+
+We have a problem with the self-signed certificate. Solution found here : <https://docs.gitlab.com/runner/configuration/tls-self-signed.html#supported-options-for-self-signed-certificates>
+
+Solution :
+
+```bash
+ansible@gitlabrunner1:/$ sudo mkdir /etc/gitlab-runner/certs
+ansible@gitlabrunner1:/$ sudo scp ansible@gitlab1:/etc/gitlab/ssl/gitlab.crt /etc/gitlab-runner/certs/192.168.126.113.xip.io.crt
+```
+
+Then, play the register process again : 
+
+```bash
+ansible@gitlabrunner1:/srv$ sudo gitlab-runner register
+Running in system-mode.                            
+                                                   
+Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):
+https://192.168.126.113.xip.io/
+Please enter the gitlab-ci token for this runner:
+5usmKyjUfxEKac_4-EJ_
+Please enter the gitlab-ci description for this runner:
+[gitlabrunner1]: 
+Please enter the gitlab-ci tags for this runner (comma separated):
+
+Whether to lock the Runner to current project [true/false]:
+[true]: 
+Registering runner... succeeded                     runner=5usmKyjU
+Please enter the executor: kubernetes, docker, parallels, ssh, virtualbox, docker-ssh+machine, docker-ssh, shell, docker+machine:
+docker
+Please enter the default Docker image (e.g. ruby:2.1):
+alpine
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded! 
+```
 
 ### Auto devops quick start guide
 
@@ -270,3 +334,7 @@ See <https://docs.gitlab.com/ee/ci/pipelines.html>
 + <https://docs.gitlab.com/ee/ci/examples/deploy_spring_boot_to_cloud_foundry/index.html>
 + <https://docs.gitlab.com/ee/ci/examples/artifactory_and_gitlab/index.html>
 + <https://docs.gitlab.com/ee/ci/examples/php.html>
+
+## Quizz final
+
+<https://forms.gle/RMy4kwru9tmGrTp37>
