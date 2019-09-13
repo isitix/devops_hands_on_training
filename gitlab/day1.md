@@ -201,12 +201,12 @@ nginx['ssl_certificate_key'] = "{{gitlab_key}}"
 
 ```
 
-## Initialisation de Gitlab
+## Initializing Gitlab
 
 + Add a standard user account (ansible)
 + Connect to gitlab with the new user account
 
-## Test an example of application
+## Testing an example of application
 
 See <https://docs.gitlab.com/ee/ci/examples/test-clojure-application.html>
 
@@ -242,3 +242,38 @@ remote: Resolving deltas: 100% (66/66), done.
 To https://192.168.126.113.xip.io/ansible/clojure-web-application.git
  * [new branch]      master -> master
 ```
+
++ Add a new branch imie-master and push it to your remote
+
+```bash
+git checkout -b imie-master
+git pull origin imie-master
+```
+
+### Configuration CI/CD (beginning)
+
+Add a CI file at the root of the project:
+
+```yml
+# .gitlab-ci.yml
+variables:
+  POSTGRES_DB: sample-test
+  DATABASE_URL: "postgresql://postgres@postgres:5432/sample-test"
+
+before_script:
+  - apt-get update -y
+  - apt-get install default-jre postgresql-client -y
+  - wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+  - chmod a+x lein
+  - export LEIN_ROOT=1
+  - PATH=$PATH:.
+  - lein deps
+  - lein migratus migrate
+
+test:
+  script:
+    - lein test
+
+```
+
+Problem : error !!
