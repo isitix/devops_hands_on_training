@@ -1,8 +1,6 @@
 # Day 2 : running gitlab examples
 
-## Debugging our first examples
-
-### Add kubernetes cluster
+## Debugging kubernetes integration with Gitlab
 
 See <https://docs.gitlab.com/ee/user/project/clusters/index.html>
 
@@ -75,14 +73,78 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2V
 
 Copy these values in the form on gitlab web UI.
 
-Pb: API URL is blocked: Requests to the local network are not allowed
+*Pb: API URL is blocked: Requests to the local network are not allowed*
 
 Solution <https://gitlab.com/gitlab-org/gitlab-ce/issues/57948>
 
-Certificate validation problem
+Go to the page https://<GITLAB SERVER IP>/admin/application_settings/network and check the box "Allow requests to the local network from system hooks".
+
+*Certificate validation problem*
 
 <https://gitlab.com/gitlab-org/gitlab-ce/issues/63470>
+
 <https://rancher.com/blog/2019/connecting-gitlab-autodevops-authorized-cluster-endpoints/>
+
+## Adding your K8S cluster following rancher procedure
+
+1. Login as root on gitlab
+
+2. Allow requests to the local network
+
+Go to the page https://<GITLAB SERVER IP>/admin/application_settings/network and check the box "Allow requests to the local network from system hooks".
+
+3. Get the CA certificate (the gitlab way rather than the rancher way)
+
+```bash
+ansible@docker1:~$ kubectl get secrets
+NAME                  TYPE                                  DATA   AGE
+dc-8g2hc              kubernetes.io/dockerconfigjson        1      31h
+default-token-6978z   kubernetes.io/service-account-token   3
+```
+
+CA certificate :
+
+```bash
+kubectl get secret default-token-6978z -o jsonpath="{['data']['ca\.crt']}" | base64 --decode
+-----BEGIN CERTIFICATE-----
+MIICwjCCAaqgAwIBAgIBADANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDEwdrdWJl
+LWNhMB4XDTE5MDkxMTExNTkwMFoXDTI5MDkwODExNTkwMFowEjEQMA4GA1UEAxMH
+a3ViZS1jYTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKnBIKuGobAT
+2tbHSFS0fdinWqsf4YQ1nM17vVaKLHK2sigeUkq7non5NZ5YJc7pKcM0pMifC51F
+QX76tyWMF071SDGPpzQRF7U8gurmwZOcWHVw6/Ky0rw15OhhAHpa+t94p4QDdvcw
+urRlrMxyyDYBNqifx6pHyNHm/FcrrIWz9fqvDrVoJ/a1sML6pN9Uf90J2rpzTl3m
+IGntzVWFWSzF2q1qpssvwQffVTZKo6qsuIuczyn/JFbW++dF1jkFemZWgqanOJuf
+7yCgsqGkWbObgxxPSuhzkX/vlVA96zfjPq1vNp+hS4Uc72AFYrYVawp0hH5Przf/
+Ee5mH+p+LuUCAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB/wQFMAMB
+Af8wDQYJKoZIhvcNAQELBQADggEBADZl4V08I4tfH9D1u3pS5aW7Jn3VlfSHKVwg
+z6p5D3i8zD1nxQ5cDnl0Vk7u3CjwUzMipeTV+7Wtuh0nLTepHWswfVG7ksSEOQ4d
+DB6oWIdxo5XMF76YGHuvoZVI4CYg/oSl4sfmxz6Wc+iQDTa6UBTmPGffFyy5VGzU
+/YEkkbM/EQkd87hKsH+xd9S9SUxR8znTgmT5LE8C0G4gW7B+Br5LokK6AJcuHWGN
+JAIitP2jMmVs/SdB4Nxg1P/Qqqn4aL4wRBKLFxFhi733+hO/yT1EtM1+Bndk+M6z
+BZOVjkLfjNAxkFev3mc39k8FgjpZosxnusMnMq4yuIVxPWmm+v0=
+-----END CERTIFICATE-----
+```
+
+Save the certificate string into a file ca.crt and check that the certificat is valid :
+
+```bash
+mdautrey@databox:~$ openssl x509 -in ca.crt -noout -subject -issuer
+subject= /CN=kube-ca
+issuer= /CN=kube-ca
+```
+
+4. Get the service endpoint and the service token (the rancher way)
+
++ Get the kube config file of the cluster on Rancher GUI
++ Get the SECOND end point parameters
+
+```yml
+cluster-name : imie1
+server: "https://192.168.126.97:6443"
+user token: "kubeconfig-user-gpzkj.c-jvbnh:r56nd4xcbmgcp8jhnmkwrfd8wccq54sfxdk9k955fdd2p4csjrwjgs"
+```
+
+5. Set the corresponding parameters in the kubernetes config page of gitlab
 
 ### Auto devops quick start guide
 
