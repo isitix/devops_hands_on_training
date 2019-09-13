@@ -146,19 +146,119 @@ user token: "kubeconfig-user-gpzkj.c-jvbnh:r56nd4xcbmgcp8jhnmkwrfd8wccq54sfxdk9k
 
 5. Set the corresponding parameters in the kubernetes config page of gitlab
 
-### Auto devops quick start guide
+## Adding a runner to execute your integration pipeline
 
-<https://gitlab.com/help/topics/autodevops/quick_start_guide.md>
-
-### Installing runner
+A runner is a runtime that processes integration pipelines. You must add runners to your gitlab environment before you execute integration pipelines.
 
 See <https://docs.gitlab.com/runner/>
 
-+ Install gitlab-runner
+### Installing a runner on kubernetes
 
-```bash
-apt install gitlab-runner
+PB!!!
+
+### Installing a runner on Ubuntu
+
+Follow the steps :
+
++ Install
++ Configure
++ Register
+
+in the documentation <https://docs.gitlab.com/runner/>
+
+#### Installing on docker1 with ansible
+
+Warning : gitlab is not compatible with the latest version of Ubuntu, Ubuntu 19.
+
+Ajout d'une nouvelle machine :
+
+| Hostname | IP |
+|---------|-------|
+| gitlabrunner1 | 192.168.126.114 |
+
+
+Task:
+
+```yml
+- hosts: gitlabrunner1
+  roles:
+    - linux
+    - gitlab-runner
 ```
+
+Role:
+
+```yml
+# roles/gitlab-runner/tasks/main.yml
+# TODO : refactorize with gitlab role
+
+# gitlab installation and configuration
+# for an installation procedure, read https://about.gitlab.com/install/#ubuntu 
+# We don't install postfix because we don't want to setup mail alert
+- name: install gitlab dependencies
+  apt:
+    name: "{{packages}}"
+    state: latest
+  vars:
+    packages:
+      - curl
+      - openssh-server
+      - ca-certificates
+
+- name: check if repository shell script is already on the VM
+  stat:
+    path: "{{working_directory}}/script.deb.sh"
+  register: gitlab_script
+
+- name: dowload repo shell script
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+    dest: "{{working_directory}}/script.deb.sh"
+    mode: '0755'
+
+# We install cosmic version (Ubuntu 19) but our target is Ubuntu 19 (not supported)...
+- name: execute the script to add gitlab repository
+  shell:
+    cmd: "{{working_directory}}/script.deb.sh"
+  when: gitlab_script.stat.exists == False
+
+- name: update apt
+  apt:
+    update_cache: yes
+  when: gitlab_script.stat.exists == False
+
+- name: install gitlab-runner
+  apt:
+    name: gitlab-runner
+    state: present
+```
+
+
+
+
+### Auto devops quick start guide
+
+Auto-devops generate default pipelines for applications that meet standard configuration.
+
+<https://gitlab.com/help/topics/autodevops/quick_start_guide.md>
+
+## Deploying your first application following Rancher instruction
+
+Tutorial source : <https://rancher.com/blog/2019/connecting-gitlab-autodevops-authorized-cluster-endpoints/>
+
+1. Install Helm
+
+See <https://v3.helm.sh/>
+
+2. Install Ingress
+
+See <https://kubernetes.io/docs/concepts/services-networking/ingress/>
+
+3. Create a project based on NodeJS gitlab template
+
+4. Set it up as required by Rancher
+
+5. Test
 
 ### Configuring pipelines
 
